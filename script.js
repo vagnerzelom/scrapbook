@@ -31,6 +31,9 @@ for (const recado of recados) {
 adicionar.onclick = function(){
     if(!titulo.value || !mensagem.value) return;
   let scrapField =  document.createElement('div')
+  let botao = document.createElement('button')
+  scrapField.appendChild(botao)
+  botao.innerHTML='Apagar';
   scrapField.setAttribute('class','d-flex mt-5 flex-wrap justify-content-center w-100');
   scrapField.setAttribute('id','scrapsField');
   let cartaoMensagem = document.createElement('div');
