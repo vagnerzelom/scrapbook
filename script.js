@@ -7,6 +7,10 @@ let recados = JSON.parse (localStorage.getItem('recados_list')) || [];
 
 for (const recado of recados) {
   let scrapField =  document.createElement('div')
+  let botao = document.createElement('button')
+  scrapField.appendChild(botao)
+  botao.innerHTML='Apagar';
+  botao.setAttribute('class', 'btn-apagar')
   scrapField.setAttribute('class','d-flex mt-5 flex-wrap justify-content-center w-100');
   scrapField.setAttribute('id','scrapsField');
   let cartaoMensagem = document.createElement('div');
@@ -59,6 +63,17 @@ adicionar.onclick = function(){
  salvar();
   
 }
+
+document.addEventListener('click',function(e){
+  const btn = e.target;
+  if(btn.classList.contains('btn-apagar')){
+     
+       btn.parentElement.remove();
+
+       salvar();
+  }
+  
+} )
 
 
 function salvar(){
