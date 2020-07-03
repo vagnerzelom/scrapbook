@@ -3,7 +3,8 @@ let mensagem = document.getElementById('messageField');
 let adicionar = document.getElementById('bnt');
 let container = document.querySelector('.container');
  
-let recados = JSON.parse (localStorage.getItem('recados_list')) || [];
+let recados = [] ; 
+
 
 for (const recado of recados) {
   let scrapField =  document.createElement('div')
@@ -60,7 +61,7 @@ adicionar.onclick = function(){
   mensagem.value= '';
   titulo.value = '';
  recados.push(text);
- salvar();
+ 
   
 }
 
@@ -70,13 +71,9 @@ document.addEventListener('click',function(e){
      
        btn.parentElement.remove();
 
-       salvar();
+      
   }
   
 } )
 
 
-function salvar(){
-
-    localStorage.setItem('recados_list',JSON.stringify(recados))
-}
