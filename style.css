@@ -33,3 +33,17 @@ textarea {
 #scrapsField .btn-apagar:hover{
   background-color: red;
 }
+
+
+#scrapsField .btn-editar{
+  height: 3%;
+  width: 6%;
+  margin-top: 4%;
+  margin-left: -6%;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+}
+
+#scrapsField .btn-editar:hover{
+  background-color: green;
+}
