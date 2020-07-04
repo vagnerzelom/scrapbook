@@ -29,3 +29,7 @@ textarea {
   color: white;
   height: 68%;
 }
+
+#scrapsField .btn-apagar:hover{
+  background-color: red;
+}
