@@ -10,10 +10,14 @@ let recados = [] ;
 adicionar.onclick = function(){
     if(!titulo.value || !mensagem.value) return;
   let scrapField =  document.createElement('div')
-  let botao = document.createElement('button')
-  scrapField.appendChild(botao)
-  botao.innerHTML='Apagar';
-  botao.setAttribute('class', 'btn-apagar')
+  let botaoApagar = document.createElement('button')
+  scrapField.appendChild(botaoApagar)
+  botaoApagar.innerHTML='Apagar';
+  let editar = document.createElement('button')
+  scrapField.appendChild(editar)
+  editar.innerHTML='Editar'
+  editar.setAttribute('class','btn-editar')
+  botaoApagar.setAttribute('class', 'btn-apagar')
   scrapField.setAttribute('class','d-flex mt-5 flex-wrap justify-content-center w-100');
   scrapField.setAttribute('id','scrapsField');
   let cartaoMensagem = document.createElement('div');
