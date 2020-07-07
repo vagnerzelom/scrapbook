@@ -48,10 +48,18 @@ document.addEventListener('click',function(e){
   if(btn.classList.contains('btn-apagar')){
      
        btn.parentElement.remove();
-
-      
-  }
-  
+ }
 } )
 
+document.addEventListener('click',function(e){
+  const btn = e.target;
+  if(btn.classList.contains('btn-editar')){
+     
+       openEditModal();
+}
+} )
+
+ function openEditModal(){
+  $('#editModal').modal('toggle');
+ }
 
