@@ -28,24 +28,40 @@
                <button id="bnt" class="btn btn-dark mt-2 w-100 font-weight-bold">Adicionar</button>
                
            </div>
-           <!-- <div id="scrapsField" class="d-flex mt-5 flex-wrap justify-content-center w-100">
-        
-              <div class="message-cards card text-white bg-dark m-2 col-3">
-              <div class="card-header font-weight-bold">Relatórios</div>
-              <div class="card-body">
-                <p class="card-text">
-                  Os relatórios foram entregues Os relatórios foram entregues Os
-                  relatórios foram entregues Os relatórios foram entregues
-                </p>
+
+           <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Editar</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <label class="font-weight-bold" for="titleInput">Titulo:</label>
+                  <input type="text"  id="editTitleInput" class="form-control"
+                  placeholder="Digite o título da mensagem">
+   
+                  <label class="font-weight-bold" for="messageInput">Mensagem:</label>
+                  <textarea  
+                  id="editMessageField" cols="30" rows="5" class="form-control" placeholder="Digite sua mensagem"></textarea>
+                  
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">fehar</button>
+                  <button type="button" class="btn btn-primary">Salvar</button>
+                </div>
               </div>
             </div>
-              
-           </div> -->
+          </div>
             </div>
         </div>
       
       </main>
-
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <script src="script.js"></script>
 </body>
 </html>
