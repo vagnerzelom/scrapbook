@@ -34,6 +34,9 @@ function novaMensagem(){
 }
 
 function deletarMensagem(position){
+  if(!confirm('Deseja realmente apagar esta mensagem?'))return;
+
+  alert('Mensagem apagada com sucesso!')
   recados.splice(position, 1)
 
   criarRecados();
@@ -62,12 +65,17 @@ function criaCartaoMensagem(titulo,mensagem, position){
  editTexto.value = recados[position].titulo;
 editMessagem.value = recados[position].mensagem;
 
-//salveedit.setAttribute('onclick',`saveChanges(position)`);
+salveedit.setAttribute('onclick',`saveChanges(${position})`);
  }
 
 function saveChanges(position){
- let titulo = editTexto.value;
- let menssagem = editMessagem.value ;
+ 
+  if(!confirm('Você realmente deseja salvar esta mensagem?')) return;
+  alert('Mensagem salva com sucesso!')
+  $("#editModal").modal("hide");
+ recados[position].titulo = editTexto.value;
+ recados[position].mensagem = editMessagem.value ;
+ criarRecados();
 }
 
 criarRecados();
