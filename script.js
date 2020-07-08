@@ -23,6 +23,9 @@ function criarRecados(){
 
 
 function novaMensagem(){
+  if(!tituloInput.value || !mensagemInput.value){
+    alert('O titulo e a mensagem deve se digitadas!')
+    return;} 
   let titulo = tituloInput.value;
   let mensagem = mensagemInput.value;
 
