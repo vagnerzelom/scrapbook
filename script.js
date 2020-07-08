@@ -1,65 +1,74 @@
-let titulo = document.getElementById('titleInput');
-let mensagem = document.getElementById('messageField');
+let tituloInput = document.getElementById('titleInput');
+let mensagemInput = document.getElementById('messageField');
 let adicionar = document.getElementById('bnt');
 let container = document.querySelector('.container');
+let caixaRecados= document.getElementById('caixa-recados')
+let editTexto= document.getElementById('editTitleInput')
+let editMessagem = document.getElementById('editMessageField')
+let salveedit= document.getElementById('saveEdit');
+
+
+
  
 let recados = [] ; 
 
-
-
-adicionar.onclick = function(){
-    if(!titulo.value || !mensagem.value) return;
-  let scrapField =  document.createElement('div')
-  let botaoApagar = document.createElement('button')
-  scrapField.appendChild(botaoApagar)
-  botaoApagar.innerHTML='Apagar';
-  let editar = document.createElement('button')
-  scrapField.appendChild(editar)
-  editar.innerHTML='Editar'
-  editar.setAttribute('class','btn-editar')
-  botaoApagar.setAttribute('class', 'btn-apagar')
-  scrapField.setAttribute('class','d-flex mt-5 flex-wrap justify-content-center w-100');
-  scrapField.setAttribute('id','scrapsField');
-  let cartaoMensagem = document.createElement('div');
-  cartaoMensagem.setAttribute('class',"message-cards card text-white bg-dark m-2 col-3");
-  scrapField.appendChild(cartaoMensagem);
-  let tituloCartao = document.createElement('div');
-  tituloCartao.setAttribute('class','card-header font-weight-bold');  
-  tituloCartao.innerHTML= titulo.value;
-  cartaoMensagem.appendChild(tituloCartao);
-  let corpoCartao = document.createElement('div');
-  corpoCartao.setAttribute('class','card-body');
-  cartaoMensagem.appendChild(corpoCartao);
-  let textoCartao =document.createElement('p');
-  textoCartao.setAttribute('class','card-text');
-  textoCartao.innerHTML = mensagem.value;
-  corpoCartao.appendChild(textoCartao);
-  container.appendChild(scrapField);
-   let text = [titulo.value, mensagem.value];
-  mensagem.value= '';
-  titulo.value = '';
- recados.push(text);
- 
-  
+function criarRecados(){
+   caixaRecados.innerHTML= '';
+   for (const recado of recados) {
+      let position = recados.indexOf(recado);
+      caixaRecados.innerHTML += criaCartaoMensagem(recado.titulo,recado.mensagem,position);
+   }
 }
 
-document.addEventListener('click',function(e){
-  const btn = e.target;
-  if(btn.classList.contains('btn-apagar')){
-     
-       btn.parentElement.remove();
- }
-} )
 
-document.addEventListener('click',function(e){
-  const btn = e.target;
-  if(btn.classList.contains('btn-editar')){
-     
-       openEditModal();
+
+function novaMensagem(){
+  let titulo = tituloInput.value;
+  let mensagem = mensagemInput.value;
+
+  tituloInput.value = '';
+  mensagemInput.value= '';
+  recados.push({titulo,mensagem})
+
+  criarRecados()
 }
-} )
 
- function openEditModal(){
+function deletarMensagem(position){
+  recados.splice(position, 1)
+
+  criarRecados();
+}
+
+function criaCartaoMensagem(titulo,mensagem, position){
+  return`
+  <div class="message-cards card text-white bg-dark m-2 col-3">
+  <div class="card-header font-weight-bold">${titulo}</div>
+  <div class="card-body">
+    <p class="card-text">
+      ${mensagem}
+    </p>
+  </div>
+  <div class="w-100 d-flex justify-content-end pr-2 pb-2">
+    <button class="btn btn-danger mr-1" onclick="deletarMensagem(${position})">Apagar</button>
+    <button class="btn btn-info" onclick="openEditModal(${position})">Editar</button>
+  </div>
+</div>
+`;}
+
+
+
+ function openEditModal(position){
   $('#editModal').modal('toggle');
+ editTexto.value = recados[position].titulo;
+editMessagem.value = recados[position].mensagem;
+
+//salveedit.setAttribute('onclick',`saveChanges(position)`);
  }
 
+function saveChanges(position){
+ let titulo = editTexto.value;
+ let menssagem = editMessagem.value ;
+}
+
+criarRecados();
+adicionar.onclick = novaMensagem;
