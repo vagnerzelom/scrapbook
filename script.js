@@ -10,7 +10,7 @@ let salveedit= document.getElementById('saveEdit');
 
 
  
-let recados = [] ; 
+let recados = JSON.parse(localStorage.getItem("recados")) || [] ; 
 
 function criarRecados(){
    caixaRecados.innerHTML= '';
@@ -34,6 +34,7 @@ function novaMensagem(){
   recados.push({titulo,mensagem})
 
   criarRecados()
+  savarLocalstore();
 }
 
 function deletarMensagem(position){
@@ -43,6 +44,7 @@ function deletarMensagem(position){
   recados.splice(position, 1)
 
   criarRecados();
+  savarLocalstore();
 }
 
 function criaCartaoMensagem(titulo,mensagem, position){
@@ -79,7 +81,13 @@ function saveChanges(position){
  recados[position].titulo = editTexto.value;
  recados[position].mensagem = editMessagem.value ;
  criarRecados();
+ savarLocalstore();
 }
+
+function savarLocalstore(){
+  localStorage.setItem('recados',JSON.stringify(recados));
+}
+
 
 criarRecados();
 adicionar.onclick = novaMensagem;
