@@ -4,5 +4,10 @@
   "main": "index.js",
   "repository": "https://github.com/vagnerzelom/scrapbook.git",
   "author": "vagnerzelom <'vagnerzelom@hotmail.com'>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4"
+  }
 }
