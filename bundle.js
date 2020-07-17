@@ -20,6 +20,9 @@ var TaskList = /*#__PURE__*/function () {
     this.mensagemInput = document.getElementById('messageField');
     this.adicionar = document.getElementById('bnt');
     this.caixaRecados = document.getElementById('caixa-recados');
+    this.editTexto = document.getElementById('editTitleInput');
+    this.editMessagem = document.getElementById('editMessageField');
+    this.salveedit = document.getElementById('saveEdit');
     this.recados = [];
     this.regitaAddbtnEvent();
   }
@@ -46,6 +49,11 @@ var TaskList = /*#__PURE__*/function () {
       document.querySelectorAll('.delete-button').forEach(function (item) {
         item.onclick = function (event) {
           return _this2.deletaMenssagem(event);
+        };
+      });
+      document.querySelectorAll('.editar-button').forEach(function (item) {
+        item.onclick = function (event) {
+          return _this2.editaRecado(event);
         };
       });
     }
@@ -107,9 +115,36 @@ var TaskList = /*#__PURE__*/function () {
       this.caixaRecados.innerHTML += html;
     }
   }, {
+    key: "editaRecado",
+    value: function editaRecado(event) {
+      var _this3 = this;
+
+      $('#editModal').modal('toggle');
+      var scrapId = event.path[2].getAttribute('id-scrap');
+      var scrapIndex = this.recados.findIndex(function (item) {
+        return item.id == scrapId;
+      });
+      this.editTexto.value = this.recados[scrapIndex].titulo;
+      this.editMessagem.value = this.recados[scrapIndex].mensagem;
+
+      this.salveedit.onclick = function () {
+        return _this3.editSalvar(scrapIndex);
+      };
+    }
+  }, {
+    key: "editSalvar",
+    value: function editSalvar(scrapIndex) {
+      if (!confirm('Você realmente deseja salvar esta mensagem?')) return;
+      alert('Mensagem salva com sucesso!');
+      $("#editModal").modal("hide");
+      this.recados[scrapIndex].titulo = this.editTexto.value;
+      this.recados[scrapIndex].mensagem = this.editMessagem.value;
+      this.criarRecados();
+    }
+  }, {
     key: "criaCartaoMensagem",
     value: function criaCartaoMensagem(id, titulo, mensagem) {
-      return "\n        <div class=\"message-cards card text-white bg-dark m-2 col-3 id-scrap=".concat(id, "\">\n        <div class=\"card-header font-weight-bold\">").concat(titulo, "</div>\n        <div class=\"card-body\">\n          <p class=\"card-text\">\n            ").concat(mensagem, "\n          </p>\n        </div>\n        <div class=\"w-100 d-flex justify-content-end pr-2 pb-2\">\n          <button class=\"btn btn-danger mr-1 delete-button\" \n          >Apagar</button>\n          <button class=\"btn btn-info\">Editar</button>\n        </div>\n      </div>\n      ");
+      return "\n        <div class=\"message-cards card text-white bg-dark m-2 col-3\" id-scrap=\"".concat(id, "\">\n        <div class=\"card-header font-weight-bold\">").concat(titulo, "</div>\n        <div class=\"card-body\">\n          <p class=\"card-text\">\n            ").concat(mensagem, "\n          </p>\n        </div>\n        <div class=\"w-100 d-flex justify-content-end pr-2 pb-2\">\n          <button class=\"btn btn-danger mr-1 delete-button\" \n          >Apagar</button>\n          <button class=\"btn btn-info editar-button \">Editar</button>\n        </div>\n      </div>\n      ");
     }
   }]);
 

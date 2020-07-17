@@ -3,30 +3,41 @@ class TaskList{
         this.tituloInput = document.getElementById('titleInput');
         this.mensagemInput = document.getElementById('messageField');
         this.adicionar = document.getElementById('bnt');
-        this.caixaRecados= document.getElementById('caixa-recados')
-
+        this.caixaRecados= document.getElementById('caixa-recados');
+        this.editTexto= document.getElementById('editTitleInput');
+        this.editMessagem = document.getElementById('editMessageField');
+        this.salveedit= document.getElementById('saveEdit');
+        
+        
        this.recados=[];
-
        this.regitaAddbtnEvent();
     }
+    
     generateRecadoId(){
       return this.recados.length +1;
     }
 
     regitaAddbtnEvent(){
         this.adicionar.onclick= () => this.novaMensagem();
+
     }
 
     botaoEvento(){
       
       document.querySelectorAll('.delete-button').forEach((item)=>{item.onclick=(event)=>this.deletaMenssagem(event);
       });
+
+      document.querySelectorAll('.editar-button').forEach(item=>{item.onclick = event=> this.editaRecado(event);
+      });
+
     }
 
     criarRecados(){
         this.caixaRecados.innerHTML ="";
 
-        for (const recado of this.recados) {         const cardHtml = this.criaCartaoMensagem(recado.id,
+        for (const recado of this.recados) {         
+        const cardHtml = this.criaCartaoMensagem(
+        recado.id,
         recado.titulo,
         recado.mensagem);
         this.inserirHtml(cardHtml);
@@ -53,19 +64,48 @@ class TaskList{
       deletaMenssagem(event){
         event.path[2].remove()
       const scrapId = event.path[2].getAttribute('id-scrap');
+    
       const scrapIndex =this.recados.findIndex(item=>{
         return item.id == scrapId;
       })
+      
       this.recados.splice(scrapIndex, 1)
       }
-
+     
       inserirHtml(html){
         this.caixaRecados.innerHTML += html
       }
 
+      editaRecado(event) {
+        $('#editModal').modal('toggle');
+        const scrapId = event.path[2].getAttribute('id-scrap');
+        const scrapIndex = this.recados.findIndex((item) => {
+          return item.id == scrapId
+        })
+
+         this.editTexto.value = this.recados[scrapIndex].titulo;
+         this.editMessagem.value = this.recados[scrapIndex].mensagem;
+
+        this.salveedit.onclick = () => this.editSalvar(scrapIndex) 
+
+       }
+
+       editSalvar(scrapIndex){
+        if(!confirm('Você realmente deseja salvar esta mensagem?')) return;
+        alert('Mensagem salva com sucesso!')
+        $("#editModal").modal("hide");
+  
+       this.recados[scrapIndex].titulo = this.editTexto.value;
+       this.recados[scrapIndex].mensagem = this.editMessagem.value ;
+       this.criarRecados();
+       }
+
+
+    
+
     criaCartaoMensagem(id, titulo,mensagem){
         return`
-        <div class="message-cards card text-white bg-dark m-2 col-3 id-scrap=${id}">
+        <div class="message-cards card text-white bg-dark m-2 col-3" id-scrap="${id}">
         <div class="card-header font-weight-bold">${titulo}</div>
         <div class="card-body">
           <p class="card-text">
@@ -75,7 +115,7 @@ class TaskList{
         <div class="w-100 d-flex justify-content-end pr-2 pb-2">
           <button class="btn btn-danger mr-1 delete-button" 
           >Apagar</button>
-          <button class="btn btn-info">Editar</button>
+          <button class="btn btn-info editar-button ">Editar</button>
         </div>
       </div>
       `;}
