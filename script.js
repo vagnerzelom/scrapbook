@@ -1,7 +1,7 @@
 let tituloInput = document.getElementById('titleInput');
 let mensagemInput = document.getElementById('messageField');
 let adicionar = document.getElementById('bnt');
-let container = document.querySelector('.container');d
+let container = document.querySelector('.container');
 let caixaRecados= document.getElementById('caixa-recados')
 let editTexto= document.getElementById('editTitleInput')
 let editMessagem = document.getElementById('editMessageField')
