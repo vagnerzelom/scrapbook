@@ -9,7 +9,7 @@ class TaskList{
         this.salveedit= document.getElementById('saveEdit');
         
         
-       this.recados=[];
+       this.recados= JSON.parse(localStorage.getItem("recados")) || [];
        this.regitaAddbtnEvent();
     }
     
@@ -58,10 +58,12 @@ class TaskList{
         this.recados.push({id,titulo,mensagem});
       
         this.criarRecados();
+        this.savarLocalstore();
        
       }
 
       deletaMenssagem(event){
+       if(!confirm('Deseja realmente apagar esta mensagem?'))return;
         event.path[2].remove()
       const scrapId = event.path[2].getAttribute('id-scrap');
     
@@ -69,7 +71,8 @@ class TaskList{
         return item.id == scrapId;
       })
       
-      this.recados.splice(scrapIndex, 1)
+      this.recados.splice(scrapIndex, 1);
+      this.savarLocalstore();
       }
      
       inserirHtml(html){
@@ -98,7 +101,13 @@ class TaskList{
        this.recados[scrapIndex].titulo = this.editTexto.value;
        this.recados[scrapIndex].mensagem = this.editMessagem.value ;
        this.criarRecados();
+       this.savarLocalstore();
        }
+
+       savarLocalstore(){
+        localStorage.setItem('recados',JSON.stringify(this.recados));
+      }
+      
 
 
     

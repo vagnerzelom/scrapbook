@@ -23,7 +23,7 @@ var TaskList = /*#__PURE__*/function () {
     this.editTexto = document.getElementById('editTitleInput');
     this.editMessagem = document.getElementById('editMessageField');
     this.salveedit = document.getElementById('saveEdit');
-    this.recados = [];
+    this.recados = JSON.parse(localStorage.getItem("recados")) || [];
     this.regitaAddbtnEvent();
   }
 
@@ -98,16 +98,19 @@ var TaskList = /*#__PURE__*/function () {
         mensagem: mensagem
       });
       this.criarRecados();
+      this.savarLocalstore();
     }
   }, {
     key: "deletaMenssagem",
     value: function deletaMenssagem(event) {
+      if (!confirm('Deseja realmente apagar esta mensagem?')) return;
       event.path[2].remove();
       var scrapId = event.path[2].getAttribute('id-scrap');
       var scrapIndex = this.recados.findIndex(function (item) {
         return item.id == scrapId;
       });
       this.recados.splice(scrapIndex, 1);
+      this.savarLocalstore();
     }
   }, {
     key: "inserirHtml",
@@ -140,6 +143,12 @@ var TaskList = /*#__PURE__*/function () {
       this.recados[scrapIndex].titulo = this.editTexto.value;
       this.recados[scrapIndex].mensagem = this.editMessagem.value;
       this.criarRecados();
+      this.savarLocalstore();
+    }
+  }, {
+    key: "savarLocalstore",
+    value: function savarLocalstore() {
+      localStorage.setItem('recados', JSON.stringify(this.recados));
     }
   }, {
     key: "criaCartaoMensagem",
