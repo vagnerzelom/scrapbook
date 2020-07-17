@@ -25,6 +25,11 @@ var TaskList = /*#__PURE__*/function () {
   }
 
   _createClass(TaskList, [{
+    key: "generateRecadoId",
+    value: function generateRecadoId() {
+      return this.recados.length + 1;
+    }
+  }, {
     key: "regitaAddbtnEvent",
     value: function regitaAddbtnEvent() {
       var _this = this;
@@ -32,6 +37,17 @@ var TaskList = /*#__PURE__*/function () {
       this.adicionar.onclick = function () {
         return _this.novaMensagem();
       };
+    }
+  }, {
+    key: "botaoEvento",
+    value: function botaoEvento() {
+      var _this2 = this;
+
+      document.querySelectorAll('.delete-button').forEach(function (item) {
+        item.onclick = function (event) {
+          return _this2.deletaMenssagem(event);
+        };
+      });
     }
   }, {
     key: "criarRecados",
@@ -44,13 +60,16 @@ var TaskList = /*#__PURE__*/function () {
       try {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
           var recado = _step.value;
-          this.caixaRecados.innerHTML += this.criaCartaoMensagem(recado.titulo, recado.mensagem);
+          var cardHtml = this.criaCartaoMensagem(recado.id, recado.titulo, recado.mensagem);
+          this.inserirHtml(cardHtml);
         }
       } catch (err) {
         _iterator.e(err);
       } finally {
         _iterator.f();
       }
+
+      this.botaoEvento();
     }
   }, {
     key: "novaMensagem",
@@ -60,20 +79,37 @@ var TaskList = /*#__PURE__*/function () {
         return;
       }
 
+      var id = this.generateRecadoId();
       var titulo = this.tituloInput.value;
       var mensagem = this.mensagemInput.value;
       this.tituloInput.value = '';
       this.mensagemInput.value = '';
       this.recados.push({
+        id: id,
         titulo: titulo,
         mensagem: mensagem
       });
       this.criarRecados();
     }
   }, {
+    key: "deletaMenssagem",
+    value: function deletaMenssagem(event) {
+      event.path[2].remove();
+      var scrapId = event.path[2].getAttribute('id-scrap');
+      var scrapIndex = this.recados.findIndex(function (item) {
+        return item.id == scrapId;
+      });
+      this.recados.splice(scrapIndex, 1);
+    }
+  }, {
+    key: "inserirHtml",
+    value: function inserirHtml(html) {
+      this.caixaRecados.innerHTML += html;
+    }
+  }, {
     key: "criaCartaoMensagem",
-    value: function criaCartaoMensagem(titulo, mensagem) {
-      return "\n        <div class=\"message-cards card text-white bg-dark m-2 col-3\">\n        <div class=\"card-header font-weight-bold\">".concat(titulo, "</div>\n        <div class=\"card-body\">\n          <p class=\"card-text\">\n            ").concat(mensagem, "\n          </p>\n        </div>\n        <div class=\"w-100 d-flex justify-content-end pr-2 pb-2\">\n          <button class=\"btn btn-danger mr-1\" \">Apagar</button>\n          <button class=\"btn btn-info\">Editar</button>\n        </div>\n      </div>\n      ");
+    value: function criaCartaoMensagem(id, titulo, mensagem) {
+      return "\n        <div class=\"message-cards card text-white bg-dark m-2 col-3 id-scrap=".concat(id, "\">\n        <div class=\"card-header font-weight-bold\">").concat(titulo, "</div>\n        <div class=\"card-body\">\n          <p class=\"card-text\">\n            ").concat(mensagem, "\n          </p>\n        </div>\n        <div class=\"w-100 d-flex justify-content-end pr-2 pb-2\">\n          <button class=\"btn btn-danger mr-1 delete-button\" \n          >Apagar</button>\n          <button class=\"btn btn-info\">Editar</button>\n        </div>\n      </div>\n      ");
     }
   }]);
 
