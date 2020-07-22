@@ -10,6 +10,7 @@ class TaskList{
         
         
        this.recados= JSON.parse(localStorage.getItem("recados")) || [];
+       this.criarRecados();
        this.regitaAddbtnEvent();
     }
     

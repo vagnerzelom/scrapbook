@@ -24,6 +24,7 @@ var TaskList = /*#__PURE__*/function () {
     this.editMessagem = document.getElementById('editMessageField');
     this.salveedit = document.getElementById('saveEdit');
     this.recados = JSON.parse(localStorage.getItem("recados")) || [];
+    this.criarRecados();
     this.regitaAddbtnEvent();
   }
 
