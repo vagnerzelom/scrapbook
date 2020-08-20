@@ -1,4 +1,4 @@
-const Dotenv =require("dontenv-webpack")
+//const Dotenv =require("dontenv-webpack")
 
 const path = require('path');
 
@@ -21,10 +21,10 @@ module.exports = {
                 },
             },
         ],
-    }, plugins: [
-        new Dotenv({
-            path: path.resolve(__dirname,".env")
-        })
-    ]
+    },// plugins: [
+    //     new Dotenv({
+    //         path: path.resolve(__dirname,".env")
+    //     })
+   // ]
 
 };
