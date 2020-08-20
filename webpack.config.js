@@ -1,4 +1,4 @@
-//const Dotenv =require("dontenv-webpack")
+const Dotenv =require("dontenv-webpack")
 
 const path = require('path');
 
@@ -11,6 +11,11 @@ module.exports = {
     devServer:{
         contentBase:path.resolve(__dirname,"public"),
     },
+    plugins: [
+        new Dotenv({
+            path: path.resolve(__dirname,".env"),
+        }),
+   ],
     module:{
         rules: [
             {
@@ -21,10 +26,6 @@ module.exports = {
                 },
             },
         ],
-    },// plugins: [
-    //     new Dotenv({
-    //         path: path.resolve(__dirname,".env")
-    //     })
-   // ]
+    },
 
 };
