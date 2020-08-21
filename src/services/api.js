@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL:"https://scrapbook-api-vagner.herokuapp.com"
+    baseURL:process.env.API_URL_DEV,
 });
 
 export default api;

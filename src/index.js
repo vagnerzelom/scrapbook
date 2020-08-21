@@ -78,17 +78,24 @@ class TaskList{
 
     async  deletaMenssagem(event){
        if(!confirm('Deseja realmente apagar esta mensagem?'))return;
-        event.path[2].remove()
-      const scrapId = event.path[2].getAttribute('id-scrap');
-    
-      const scrapIndex = this.recados.findIndex(item=>{
-        return item.id == scrapId;
-      })
+       
+       
+       try{
+         event.path[2].remove();
+
+         const scrapId = event.path[2].getAttribute('id-scrap');
+        
+         await api.delete(`/scraps/${scrapId}`);
+
+        const scrapIndex = this.recados.findIndex(item=>{
+          return item.id == scrapId;
+        })
+        this.recados.splice(scrapIndex, 1);
       
-      await api.delete(`/scraps/${scrapId}`);
+      } catch(error){
+        console.log(error);
+      }
       
-      
-      this.recados.splice(scrapIndex, 1);
       
     }
      
@@ -115,18 +122,20 @@ class TaskList{
       async editSalvar(scrapId,scrapIndex){
         if(!confirm('Você realmente deseja salvar esta mensagem?')) return;
         alert('Mensagem salva com sucesso!')
-        
+        try{
         let title = this.editTexto.value;
         let message = this.editMessagem.value ;
 
         
-        await api.put(`/scraps/${scrapId}`,  {title, message});
+      const {data: scrap} = await api.put(`/scraps/${scrapId}`,  {title, message});
         
-        this.recados[scrapIndex]={title,message}
+        this.recados[scrapIndex]= scrap;
         
         this.criarRecados();
         
-        $("#editModal").modal("hide");
+        $("#editModal").modal("hide");}catch(error){
+          console.log(error);
+        }
        }
 
      
