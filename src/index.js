@@ -81,15 +81,16 @@ class TaskList{
        
        
        try{
-         event.path[2].remove()
+         event.path[2].remove();
+
          const scrapId = event.path[2].getAttribute('id-scrap');
         
-        await api.delete(`/scraps/${scrapId}`);
+         await api.delete(`/scraps/${scrapId}`);
 
-      const scrapIndex = this.recados.findIndex(item=>{
-        return item.id == scrapId;
-      })
-      this.recados.splice(scrapIndex, 1);
+        const scrapIndex = this.recados.findIndex(item=>{
+          return item.id == scrapId;
+        })
+        this.recados.splice(scrapIndex, 1);
       
       } catch(error){
         console.log(error);
