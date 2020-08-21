@@ -1,4 +1,4 @@
-const Dotenv =require("dontenv-webpack")
+const Dotenv =require("dotenv-webpack")
 
 const path = require('path');
 

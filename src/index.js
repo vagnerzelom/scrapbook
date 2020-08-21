@@ -78,16 +78,19 @@ class TaskList{
 
     async  deletaMenssagem(event){
        if(!confirm('Deseja realmente apagar esta mensagem?'))return;
-        event.path[2].remove()
-      const scrapId = event.path[2].getAttribute('id-scrap');
-    
+       
+       
+       try{
+         event.path[2].remove()
+         const scrapId = event.path[2].getAttribute('id-scrap');
+        
+        await api.delete(`/scraps/${scrapId}`);
+
       const scrapIndex = this.recados.findIndex(item=>{
         return item.id == scrapId;
       })
       this.recados.splice(scrapIndex, 1);
-
-      try{
-      await api.delete(`/scraps/${scrapId}`);
+      
       } catch(error){
         console.log(error);
       }
