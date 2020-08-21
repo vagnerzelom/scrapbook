@@ -1,3 +1,8 @@
+import api from "./services/api";
+
+
+
+
 class TaskList{
     constructor(){
         this.tituloInput = document.getElementById('titleInput');
@@ -9,13 +14,19 @@ class TaskList{
         this.salveedit= document.getElementById('saveEdit');
         
         
-       this.recados= JSON.parse(localStorage.getItem("recados")) || [];
+       this.recados= [];
+       
        this.regitaAddbtnEvent();
+       this.getScraps();
+    }
+    async getScraps(){
+        const{data: recados}= await api.get("/scraps");
+
+        this.recados = recados;
+        this.criarRecados();
     }
     
-    generateRecadoId(){
-      return this.recados.length +1;
-    }
+    
 
     regitaAddbtnEvent(){
         this.adicionar.onclick= () => this.novaMensagem();
@@ -38,87 +49,109 @@ class TaskList{
         for (const recado of this.recados) {         
         const cardHtml = this.criaCartaoMensagem(
         recado.id,
-        recado.titulo,
-        recado.mensagem);
+        recado.title,
+        recado.message);
         this.inserirHtml(cardHtml);
       }
       this.botaoEvento();
      }
 
-    novaMensagem(){
+  async  novaMensagem(){
         if(!this.tituloInput.value || !this.mensagemInput.value){
           alert('O titulo e a mensagem deve se digitadas!')
           return;} 
-        const id = this.generateRecadoId();
-        const titulo = this.tituloInput.value;
-        const mensagem = this.mensagemInput.value;
-      
-        this.tituloInput.value = '';
-        this.mensagemInput.value= '';
-        this.recados.push({id,titulo,mensagem});
-      
-        this.criarRecados();
-        this.savarLocalstore();
-       
-      }
+          
+          const novoTitulo = this.tituloInput.value;
+          const novoMensagem = this.mensagemInput.value;
+          
+          const{data: {id, title, message}} = await api.post("/scraps",{title:novoTitulo, message:novoMensagem});
+          
+          this.recados.push({id,title,message});
 
-      deletaMenssagem(event){
+          this.criarRecados();
+          
+          this.tituloInput.value = '';
+          this.mensagemInput.value= '';
+       }
+
+
+
+    async  deletaMenssagem(event){
        if(!confirm('Deseja realmente apagar esta mensagem?'))return;
-        event.path[2].remove()
-      const scrapId = event.path[2].getAttribute('id-scrap');
-    
-      const scrapIndex =this.recados.findIndex(item=>{
-        return item.id == scrapId;
-      })
+       
+       
+       try{
+         event.path[2].remove();
+
+         const scrapId = event.path[2].getAttribute('id-scrap');
+        
+         await api.delete(`/scraps/${scrapId}`);
+
+        const scrapIndex = this.recados.findIndex(item=>{
+          return item.id == scrapId;
+        })
+        this.recados.splice(scrapIndex, 1);
       
-      this.recados.splice(scrapIndex, 1);
-      this.savarLocalstore();
+      } catch(error){
+        console.log(error);
       }
+      
+      
+    }
      
       inserirHtml(html){
         this.caixaRecados.innerHTML += html
       }
 
+
+
       editaRecado(event) {
         $('#editModal').modal('toggle');
         const scrapId = event.path[2].getAttribute('id-scrap');
-        const scrapIndex = this.recados.findIndex((item) => {
-          return item.id == scrapId
-        })
+         const scrapIndex = this.recados.findIndex((item) => {
+           return item.id == scrapId
+         })
+             
+         this.editTexto.value = this.recados[scrapIndex].title;
+         this.editMessagem.value = this.recados[scrapIndex].message;
 
-         this.editTexto.value = this.recados[scrapIndex].titulo;
-         this.editMessagem.value = this.recados[scrapIndex].mensagem;
-
-        this.salveedit.onclick = () => this.editSalvar(scrapIndex) 
+        this.salveedit.onclick = () => this.editSalvar(scrapId,scrapIndex) 
 
        }
 
-       editSalvar(scrapIndex){
+      async editSalvar(scrapId,scrapIndex){
         if(!confirm('Você realmente deseja salvar esta mensagem?')) return;
         alert('Mensagem salva com sucesso!')
-        $("#editModal").modal("hide");
-  
-       this.recados[scrapIndex].titulo = this.editTexto.value;
-       this.recados[scrapIndex].mensagem = this.editMessagem.value ;
-       this.criarRecados();
-       this.savarLocalstore();
+        try{
+        let title = this.editTexto.value;
+        let message = this.editMessagem.value ;
+
+        
+      const {data: scrap} = await api.put(`/scraps/${scrapId}`,  {title, message});
+        
+        this.recados[scrapIndex]= scrap;
+        
+        this.criarRecados();
+        
+        $("#editModal").modal("hide");}catch(error){
+          console.log(error);
+        }
        }
 
-       savarLocalstore(){
-        localStorage.setItem('recados',JSON.stringify(this.recados));
-      }
+     
+      
       
 
 
     
 
-    criaCartaoMensagem(id, titulo,mensagem){
+    criaCartaoMensagem(id, title,message){
         return`
         <div class="message-cards card text-white bg-dark m-2 col-3" id-scrap="${id}">
-        <div class="card-header font-weight-bold">${titulo}</div>
+        <div class="card-header font-weight-bold">${title}</div>
         <div class="card-body">
           <p class="card-text">
-            ${mensagem}
+            ${message}
           </p>
         </div>
         <div class="w-100 d-flex justify-content-end pr-2 pb-2">
